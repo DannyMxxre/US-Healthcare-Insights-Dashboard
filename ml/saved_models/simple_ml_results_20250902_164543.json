@@ -1,0 +1,112 @@
+{
+  "timestamp": "20250902_164543",
+  "models_trained": 3,
+  "predictions": {
+    "icu_occupancy_pred": [
+      0.7618182631778248,
+      0.7831130456567453,
+      0.7535218191038675,
+      0.7566512631449342,
+      0.7276506567609142,
+      0.7816521687924647,
+      0.8293729613446997,
+      0.6896679858469693,
+      0.7142364287259231,
+      0.8132974531904493
+    ],
+    "anomaly_scores": [
+      0.03523463868926546,
+      0.01524159136386627,
+      0.0357370167764825,
+      -0.06301464174726212,
+      0.030697828652565096,
+      0.007001626860806853,
+      0.017042569260168228,
+      0.023138764644348553,
+      0.044487594067981195,
+      0.0443383627460982
+    ],
+    "anomaly_predictions": [
+      1,
+      1,
+      1,
+      -1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "anomalies_detected": 1
+  },
+  "insights": {
+    "model_performance": {
+      "icu_predictor": {
+        "r2_score": 0.567070066057146,
+        "mse": 0.003254377493239854,
+        "performance_level": "Fair"
+      },
+      "sentiment_analyzer": {
+        "accuracy": 0.6,
+        "performance_level": "Fair"
+      }
+    },
+    "predictions_summary": {
+      "icu_occupancy": {
+        "mean_prediction": 0.7610982045744792,
+        "max_prediction": 0.8293729613446997,
+        "min_prediction": 0.6896679858469693,
+        "high_risk_states": 2
+      }
+    },
+    "anomaly_analysis": {
+      "anomalies_detected": 1,
+      "anomaly_rate": 0.1,
+      "risk_level": "Medium"
+    },
+    "recommendations": [
+      "\u26a0\ufe0f 2 states predicted to have high ICU occupancy (>80%)",
+      "\ud83d\udea8 1 anomalies detected - requires immediate attention"
+    ]
+  },
+  "model_results": {
+    "icu_predictor": {
+      "mse": 0.003254377493239854,
+      "r2": 0.567070066057146,
+      "feature_importance": {
+        "total_hospitals": 0.15665135552161,
+        "available_beds": 0.24247477814774152,
+        "emergency_wait_time": 0.14147833857800207,
+        "staff_shortage": 0.14558004130592844,
+        "bed_utilization": 0.07127993164486715,
+        "staff_efficiency": 0.13027788737626794,
+        "emergency_load": 0.1122576674255829
+      }
+    },
+    "anomaly_detector": {
+      "anomalies_detected": 1,
+      "anomaly_rate": 0.1,
+      "anomaly_scores": [
+        0.03523463868926546,
+        0.01524159136386627,
+        0.0357370167764825,
+        -0.06301464174726212,
+        0.030697828652565096,
+        0.007001626860806853,
+        0.017042569260168228,
+        0.023138764644348553,
+        0.044487594067981195,
+        0.0443383627460982
+      ]
+    },
+    "sentiment_analyzer": {
+      "accuracy": 0.6,
+      "unique_sentiments": [
+        "Positive",
+        "Negative",
+        "Neutral"
+      ]
+    }
+  }
+}

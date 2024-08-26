@@ -1,8 +1,8 @@
-# 🏥 US Healthcare Insights Dashboard V1.0
+# 🏥 US Healthcare Insights Dashboard V2.0
 
 ## 🎯 **Project Objective**
 
-**US Healthcare Insights Dashboard** is a comprehensive ETL project for analyzing the US healthcare system using open data sources. The project demonstrates a complete data processing cycle: from collection and transformation to insight visualization.
+**US Healthcare Insights Dashboard V2.0** is a comprehensive, enterprise-grade data engineering project for analyzing the US healthcare system. This project demonstrates advanced data engineering skills including ETL pipelines, machine learning, real-time APIs, containerization, and automated workflows.
 
 ### **🏆 Key Achievements:**
 
@@ -11,6 +11,12 @@
 - **💰 250 Records:** Healthcare cost analysis (2020-2024)
 - **🗺️ Geospatial Analysis:** Interactive maps with hospital markers
 - **📈 Correlation Analysis:** Identifying relationships between social and medical indicators
+- **🤖 Machine Learning:** Predictive models for healthcare outcomes
+- **🗄️ PostgreSQL Database:** Production-ready data storage with PostGIS
+- **⚡ Apache Airflow:** Automated ETL pipelines with scheduling
+- **🐳 Docker Containerization:** Full application containerization
+- **🔌 REST API:** FastAPI-based API with authentication and monitoring
+- **📊 Monitoring:** Prometheus and Grafana for observability
 
 ## 🚀 **Quick Start**
 
@@ -19,25 +25,56 @@
 pip install -r requirements.txt
 ```
 
-### **2. Collect Data**
+### **2. Start with Docker (Recommended)**
 ```bash
-# Create national datasets
+# Start all services
+docker-compose up -d
+
+# Access services:
+# Dashboard: http://localhost:8501
+# Airflow: http://localhost:8080
+# API: http://localhost:8000
+# Grafana: http://localhost:3000
+```
+
+### **3. Manual Setup**
+```bash
+# Collect data
 python3 etl/data_collector.py
-```
 
-### **3. Process Data (ETL)**
-```bash
-# Process and analyze data
+# Process data
 python3 etl/data_processor.py
-```
 
-### **4. Launch Dashboard**
-```bash
-# Launch interactive dashboard
+# Train ML models
+python3 ml/models.py
+
+# Start dashboard
 streamlit run dashboard/app.py
+
+# Start API
+uvicorn api.main:app --host 0.0.0.0 --port 8000
 ```
 
-The dashboard will be available at: `http://localhost:8501`
+## 🏗️ **Architecture Overview**
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Data Sources  │    │   ETL Pipeline  │    │   PostgreSQL    │
+│                 │    │                 │    │   Database      │
+│ • data.gov      │───▶│ • Airflow DAGs  │───▶│ • Raw Data      │
+│ • CDC API       │    │ • Data Quality  │    │ • Processed     │
+│ • CMS API       │    │ • Validation   │    │ • Analytics     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+                                │
+                                ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   ML Models     │    │   REST API       │    │   Dashboard     │
+│                 │    │                 │    │                 │
+│ • Predictions  │◀───│ • FastAPI        │◀───│ • Streamlit     │
+│ • Clustering   │    │ • Authentication │    │ • Interactive   │
+│ • Analytics    │    │ • Monitoring     │    │ • Real-time     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
 ## 📊 **Data Sources**
 
@@ -45,7 +82,7 @@ The dashboard will be available at: `http://localhost:8501`
 - **1,542 hospitals** across all 50 states
 - Quality and safety ratings
 - Bed capacity and facility types
-- Geographic coordinates
+- Geographic coordinates with PostGIS
 
 ### **👥 Demographic Data**
 - Population by state
@@ -68,39 +105,160 @@ The dashboard will be available at: `http://localhost:8501`
 ## 🛠️ **Technology Stack**
 
 ### **Backend & Data Processing**
-- **Python 3.13** - primary development language
-- **Pandas** - data processing and analysis
-- **NumPy** - numerical computations
-- **Folium** - interactive map creation
+- **Python 3.11** - primary development language
+- **Pandas & NumPy** - data processing and analysis
+- **PostgreSQL + PostGIS** - production database with geospatial support
+- **SQLAlchemy** - ORM and database management
+- **Alembic** - database migrations
 
-### **Frontend & Visualization**
-- **Streamlit** - interactive web interface
-- **Plotly** - interactive charts and graphs
-- **Streamlit-Folium** - map integration with Streamlit
+### **Machine Learning**
+- **Scikit-learn** - traditional ML models
+- **TensorFlow & PyTorch** - deep learning capabilities
+- **XGBoost & LightGBM** - gradient boosting
+- **Joblib** - model serialization
 
-### **Data Management**
-- **CSV** - structured data storage
-- **JSON** - metadata and insights
-- **HTML** - interactive maps
+### **Web Framework & API**
+- **FastAPI** - high-performance REST API
+- **Streamlit** - interactive dashboard
+- **Uvicorn** - ASGI server
+- **Pydantic** - data validation
+
+### **Data Pipeline & Orchestration**
+- **Apache Airflow** - workflow orchestration
+- **Redis** - caching and session management
+- **Prometheus** - metrics collection
+- **Grafana** - monitoring dashboards
+
+### **Containerization & Deployment**
+- **Docker** - application containerization
+- **Docker Compose** - multi-service orchestration
+- **Nginx** - reverse proxy and load balancing
+
+### **Monitoring & Observability**
+- **Prometheus** - metrics collection
+- **Grafana** - visualization and alerting
+- **Structlog** - structured logging
+- **Health checks** - service monitoring
 
 ## 📁 **Project Structure**
 
 ```
 US Healthcare Insights Dashboard/
 ├── 📊 data/
-│   ├── raw/                    # Raw data
+│   ├── raw/                    # Raw data storage
 │   └── processed/              # Processed data
 ├── 🔧 etl/
-│   ├── data_collector.py       # National data collection
-│   └── data_processor.py       # ETL data processing
+│   ├── data_collector.py       # Data collection
+│   └── data_processor.py       # ETL processing
+├── 🤖 ml/
+│   ├── models.py               # ML model training
+│   └── saved_models/           # Trained models
 ├── 🎨 dashboard/
-│   └── app.py                  # Main dashboard
-├── 📋 requirements.txt         # Project dependencies
-├── 🚀 run_project.py          # Project runner script
-└── 📖 README.md               # Project documentation
+│   └── app.py                  # Streamlit dashboard
+├── 🔌 api/
+│   └── main.py                 # FastAPI REST API
+├── ⚡ airflow/
+│   └── dags/                   # Airflow DAGs
+├── 🗄️ database/
+│   └── schema.sql              # PostgreSQL schema
+├── 🐳 docker/
+│   ├── docker-compose.yml      # Multi-service setup
+│   └── Dockerfile.dashboard    # Dashboard container
+├── 📊 monitoring/
+│   ├── prometheus.yml          # Prometheus config
+│   └── grafana/                # Grafana dashboards
+├── 📋 requirements.txt         # Python dependencies
+├── 🚀 run_project.py          # Project runner
+└── 📖 README.md               # Documentation
 ```
 
-## 📈 **Key Insights**
+## 🤖 **Machine Learning Models**
+
+### **🏥 Hospital Rating Predictor**
+- **Algorithm:** Random Forest Regressor
+- **Features:** Hospital characteristics, demographic data
+- **Accuracy:** R² score with cross-validation
+- **Use Case:** Predict hospital quality ratings
+
+### **💰 Healthcare Cost Predictor**
+- **Algorithm:** Linear Regression
+- **Features:** Economic indicators, population data
+- **Accuracy:** Cost trend prediction
+- **Use Case:** Forecast healthcare costs
+
+### **🗺️ State Clustering**
+- **Algorithm:** K-Means Clustering
+- **Features:** Healthcare metrics by state
+- **Clusters:** 4 distinct healthcare state groups
+- **Use Case:** State segmentation analysis
+
+### **🏆 Health Outcome Predictor**
+- **Algorithm:** Random Forest Regressor
+- **Features:** Social determinants, healthcare access
+- **Target:** Life expectancy prediction
+- **Use Case:** Health outcome forecasting
+
+## 🔌 **REST API Endpoints**
+
+### **🏥 Hospital Endpoints**
+- `GET /api/v1/hospitals` - List hospitals with filtering
+- `GET /api/v1/hospitals/{id}` - Get specific hospital
+- `POST /api/v1/predict/hospital-rating` - Predict hospital rating
+
+### **🗺️ State Endpoints**
+- `GET /api/v1/states` - Get state metrics
+- `GET /api/v1/states/{state}` - Get detailed state data
+
+### **📊 Analytics Endpoints**
+- `GET /api/v1/analytics/correlations` - Get correlation analysis
+- `GET /api/v1/analytics/insights` - Get generated insights
+
+### **📈 Dashboard Endpoints**
+- `GET /api/v1/dashboard/summary` - Get summary metrics
+- `GET /api/v1/export/hospitals` - Export hospital data
+
+## ⚡ **Apache Airflow DAGs**
+
+### **Daily ETL Pipeline**
+- **Schedule:** Daily at 2 AM
+- **Tasks:**
+  1. Data Collection
+  2. Data Processing
+  3. Database Loading
+  4. ML Model Training
+  5. Analytics Generation
+  6. Dashboard Update
+  7. Email Notifications
+
+### **Data Quality Checks**
+- Completeness validation
+- Data type verification
+- Range validation
+- Cross-reference checks
+
+### **Monitoring & Alerting**
+- Success/failure notifications
+- Performance metrics
+- Error tracking
+- Retry mechanisms
+
+## 🐳 **Docker Services**
+
+### **Core Services**
+- **PostgreSQL + PostGIS** - Database with geospatial support
+- **Redis** - Caching and session management
+- **Streamlit Dashboard** - Interactive web interface
+- **FastAPI** - REST API service
+
+### **Orchestration**
+- **Apache Airflow** - Workflow management
+- **Nginx** - Reverse proxy and load balancing
+
+### **Monitoring**
+- **Prometheus** - Metrics collection
+- **Grafana** - Visualization and alerting
+
+## 📊 **Key Insights**
 
 ### **🏥 Hospital Analysis**
 - **Top 10 states** by hospital count
@@ -126,90 +284,77 @@ US Healthcare Insights Dashboard/
 - **Access to medical care**
 - **Healthcare system efficiency**
 
-## 🗺️ **Geospatial Analysis**
+## 🚀 **Deployment Options**
 
-### **Interactive US Map**
-- **Hospital markers** with detailed information
-- **State circle markers** with uninsured rates
-- **Heatmap** of medical facility density
-- **Interactive popups** with data
-
-## 📊 **Analysis Tools**
-
-### **State Comparison**
-- Interactive state selection for comparison
-- Multiple metrics for analysis
-- Visualization of regional differences
-
-### **Correlation Analysis**
-- Relationship between income and life expectancy
-- Correlation between education and healthcare coverage
-- Impact of poverty on health indicators
-
-## 🚀 **Deployment**
-
-### **Local Deployment**
+### **Local Development**
 ```bash
-# Clone repository
+# Clone and setup
 git clone <repository-url>
 cd US-Healthcare-Insights-Dashboard
-
-# Install dependencies
 pip install -r requirements.txt
 
-# Run project
-python3 run_project.py
+# Run with Docker
+docker-compose up -d
 ```
 
-### **Cloud Deployment**
-The project is ready for deployment on:
-- **Streamlit Cloud** - for dashboard demonstration
-- **Heroku** - for full deployment
-- **Docker + VPS** - for production environment
-- **Render.com** - for automatic deployment
+### **Production Deployment**
+- **AWS ECS** - Container orchestration
+- **Google Cloud Run** - Serverless containers
+- **Azure Container Instances** - Managed containers
+- **Kubernetes** - Enterprise orchestration
+
+### **Cloud Services**
+- **Streamlit Cloud** - Dashboard hosting
+- **Heroku** - Application hosting
+- **AWS RDS** - Managed PostgreSQL
+- **Google Cloud SQL** - Managed database
 
 ## 📋 **Portfolio Highlights**
 
 ### **🔧 Technical Skills**
-- **ETL Pipeline Development** - complete data processing cycle
-- **Data Visualization** - interactive dashboard creation
-- **Geospatial Analysis** - geographic data processing
-- **Statistical Analysis** - correlation analysis and insights
+- **Data Engineering** - Complete ETL pipeline development
+- **Machine Learning** - Predictive modeling and analytics
+- **Database Design** - PostgreSQL schema design and optimization
+- **API Development** - RESTful API with authentication
+- **Containerization** - Docker and Docker Compose
+- **Workflow Orchestration** - Apache Airflow DAGs
+- **Monitoring** - Prometheus and Grafana setup
 
 ### **📊 Analytical Skills**
-- **Healthcare Analytics** - medical data analysis
-- **Demographic Analysis** - social determinants study
-- **Cost Analysis** - economic indicators analysis
-- **Quality Metrics** - healthcare quality assessment
+- **Healthcare Analytics** - Medical data analysis
+- **Demographic Analysis** - Social determinants study
+- **Cost Analysis** - Economic indicators analysis
+- **Quality Metrics** - Healthcare quality assessment
+- **Predictive Modeling** - ML model development
 
 ### **🎯 Business Value**
-- **Data-Driven Insights** - evidence-based solutions
-- **Healthcare Optimization** - healthcare system optimization
-- **Policy Recommendations** - recommendations for policymakers
-- **Public Health Awareness** - health awareness improvement
+- **Data-Driven Insights** - Evidence-based solutions
+- **Healthcare Optimization** - System efficiency analysis
+- **Policy Recommendations** - Data-backed recommendations
+- **Public Health Awareness** - Health awareness improvement
 
 ## 🔮 **Future Enhancements**
 
-### **V2.0 Plans**
-- **Real-time Data Integration** - real-time API integration
-- **Machine Learning Models** - health trend prediction
-- **Advanced Geospatial Features** - 3D maps and clustering
-- **Mobile Optimization** - mobile device adaptation
+### **V3.0 Plans**
+- **Real-time Data Streaming** - Apache Kafka integration
+- **Advanced ML Models** - Deep learning for predictions
+- **Natural Language Processing** - Text analysis of medical reports
+- **Blockchain Integration** - Secure health data sharing
 
-### **Data Expansion**
-- **COVID-19 Impact Analysis** - pandemic impact analysis
-- **Chronic Disease Tracking** - chronic disease monitoring
-- **Mental Health Metrics** - mental health indicators
-- **Environmental Health** - environment-health connection
+### **Advanced Features**
+- **Real-time Alerts** - Healthcare system monitoring
+- **Predictive Analytics** - Disease outbreak prediction
+- **Personalized Insights** - Individual health recommendations
+- **Mobile Application** - iOS/Android apps
 
 ## 📄 **License**
 
-This project is created for demonstrating skills in data analysis and healthcare. Used only for educational and portfolio purposes.
+This project is created for demonstrating advanced data engineering skills. Used for educational and portfolio purposes.
 
 ## 👨‍💻 **Author**
 
-**Danny Covellie** - Data Scientist & Healthcare Analytics Specialist
+**Danny Covellie** - Senior Data Engineer & Healthcare Analytics Specialist
 
 ---
 
-**🏥 US Healthcare Insights Dashboard V1.0** - Comprehensive US Healthcare System Analysis
+**🏥 US Healthcare Insights Dashboard V2.0** - Enterprise-Grade Healthcare Analytics Platform

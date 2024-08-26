@@ -1,0 +1,6 @@
+alert_id,type,severity,state,description,issued_at,expires_at,affected_hospitals
+ALERT_001,Severe Weather,High,IL,Emergency alert 1 affecting healthcare services,2025-09-02T11:14:21.403151,2025-09-03T09:14:21.403161,24
+ALERT_002,Public Health Emergency,Low,IL,Emergency alert 2 affecting healthcare services,2025-09-02T09:14:21.403187,2025-09-04T16:14:21.403192,33
+ALERT_003,Natural Disaster,Low,FL,Emergency alert 3 affecting healthcare services,2025-09-02T00:14:21.403213,2025-09-03T20:14:21.403216,19
+ALERT_004,Public Health Emergency,Critical,NY,Emergency alert 4 affecting healthcare services,2025-09-02T15:14:21.403240,2025-09-03T04:14:21.403243,16
+ALERT_005,Severe Weather,Low,TX,Emergency alert 5 affecting healthcare services,2025-09-02T14:14:21.403262,2025-09-05T05:14:21.403265,5

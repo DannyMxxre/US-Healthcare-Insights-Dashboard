@@ -1,0 +1,26 @@
+{
+  "total_plans": 550,
+  "states_covered": 49,
+  "plan_types": {
+    "Medicaid Managed Care": 69,
+    "POS": 67,
+    "PPO": 65,
+    "HMO": 64,
+    "ACA Marketplace": 62,
+    "HDHP": 56,
+    "Employer Group": 56,
+    "EPO": 56,
+    "Medicare Advantage": 55
+  },
+  "avg_premium": 375.07098181818185,
+  "avg_deductible": 2010.0,
+  "avg_rating": 3.7556363636363637,
+  "top_companies": {
+    "Molina Healthcare": 83,
+    "Anthem": 48,
+    "UnitedHealth Group": 47,
+    "Blue Cross Blue Shield": 45,
+    "Aetna": 44
+  },
+  "generated_at": "2025-09-02T16:38:02.753097"
+}

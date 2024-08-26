@@ -303,6 +303,122 @@ class UltimateHealthcareDashboard:
                         st.write(f"**Average Readmission Rate:** {quality_insights['avg_readmission_rate']:.1%}")
                         st.write(f"**Worst Life Expectancy:** {quality_insights['worst_life_expectancy_state']}")
                         st.write(f"**Worst Access to Care:** {quality_insights['worst_access_to_care_state']}")
+        
+        # Healthcare Plans insights
+        self.render_healthcare_plans_preview()
+    
+    def render_healthcare_plans_preview(self):
+        """Render healthcare plans preview"""
+        try:
+            # Try to load healthcare plans data
+            plans_files = list(Path("data/raw").glob("best_healthcare_plans_*.csv"))
+            if plans_files:
+                best_plans_df = pd.read_csv(max(plans_files, key=lambda x: x.stat().st_mtime))
+                
+                with st.expander("🏥 Best Healthcare Plans"):
+                    st.markdown("**Top 5 States by Plan Score:**")
+                    
+                    top_plans = best_plans_df.nlargest(5, 'overall_score')
+                    for _, plan in top_plans.iterrows():
+                        st.markdown(f"""
+                        **{plan['state']}**: {plan['plan_name']}  
+                        💰 ${plan['monthly_premium']:.0f}/month • ⭐ {plan['overall_rating']:.1f}/5.0 • 🏆 {plan['overall_score']:.1f}
+                        """)
+                    
+                    st.markdown(f"""
+                    **📊 Summary:**
+                    - **Total Plans Analyzed:** {len(best_plans_df)} across {best_plans_df['state'].nunique()} states
+                    - **Average Premium:** ${best_plans_df['monthly_premium'].mean():.0f}/month
+                    - **Average Rating:** {best_plans_df['overall_rating'].mean():.1f}/5.0
+                    - **Best Plan Type:** {best_plans_df['plan_type'].mode().iloc[0]}
+                    """)
+                    
+                    if st.button("🔍 View Full Healthcare Plans Dashboard"):
+                        st.markdown("""
+                        **🚀 Launch Healthcare Plans Dashboard:**
+                        ```bash
+                        streamlit run dashboard/healthcare_plans_app.py --server.port 8505
+                        ```
+                        """)
+            else:
+                with st.expander("🏥 Healthcare Plans"):
+                    st.info("💡 **Healthcare Plans Analysis Available!**")
+                    st.markdown("""
+                    Run the healthcare plans collector to get:
+                    - **Best plans for every state**
+                    - **Price comparisons**
+                    - **Customer reviews**
+                    - **Plan ratings**
+                    
+                    ```bash
+                    python3 etl/healthcare_plans_collector.py
+                    ```
+                    """)
+        except Exception as e:
+            with st.expander("🏥 Healthcare Plans"):
+                st.warning(f"Could not load healthcare plans data: {e}")
+    
+    def render_ml_insights_preview(self):
+        """Render ML insights preview"""
+        try:
+            # Try to load ML results
+            ml_files = list(Path("ml/saved_models").glob("simple_ml_results_*.json"))
+            if ml_files:
+                with open(max(ml_files, key=lambda x: x.stat().st_mtime), 'r') as f:
+                    ml_results = json.load(f)
+                
+                with st.expander("🤖 ML Insights"):
+                    st.markdown("**Top ML Predictions:**")
+                    
+                    if 'predictions' in ml_results and 'icu_occupancy_pred' in ml_results['predictions']:
+                        icu_preds = ml_results['predictions']['icu_occupancy_pred']
+                        high_risk = len([p for p in icu_preds if p > 0.8])
+                        avg_icu = np.mean(icu_preds)
+                        
+                        st.markdown(f"""
+                        **🏥 ICU Predictions:**
+                        - **Average ICU Occupancy:** {avg_icu:.1%}
+                        - **High Risk States:** {high_risk} (ICU >80%)
+                        - **Model Performance:** R² = {ml_results.get('insights', {}).get('model_performance', {}).get('icu_predictor', {}).get('r2_score', 'N/A')}
+                        """)
+                    
+                    if 'predictions' in ml_results and 'anomalies_detected' in ml_results['predictions']:
+                        anomalies = ml_results['predictions']['anomalies_detected']
+                        st.markdown(f"""
+                        **🚨 Anomaly Detection:**
+                        - **Anomalies Detected:** {anomalies}
+                        - **Risk Level:** {ml_results.get('insights', {}).get('anomaly_analysis', {}).get('risk_level', 'N/A')}
+                        """)
+                    
+                    if 'insights' in ml_results and 'recommendations' in ml_results['insights']:
+                        st.markdown("**🎯 AI Recommendations:**")
+                        for i, rec in enumerate(ml_results['insights']['recommendations'][:2]):
+                            st.markdown(f"  {i+1}. {rec}")
+                    
+                    if st.button("🔍 View Full ML Dashboard"):
+                        st.markdown("""
+                        **🚀 Launch ML Insights Dashboard:**
+                        ```bash
+                        streamlit run dashboard/ml_insights_app.py --server.port 8503
+                        ```
+                        """)
+            else:
+                with st.expander("🤖 ML Insights"):
+                    st.info("💡 **ML Analysis Available!**")
+                    st.markdown("""
+                    Run the ML models to get:
+                    - **ICU occupancy predictions**
+                    - **Anomaly detection**
+                    - **Sentiment analysis**
+                    - **AI recommendations**
+                    
+                    ```bash
+                    python3 ml/test_advanced_models.py
+                    ```
+                    """)
+        except Exception as e:
+            with st.expander("🤖 ML Insights"):
+                st.warning(f"Could not load ML data: {e}")
     
     def render_state_comparison(self):
         """Render state comparison tool"""
