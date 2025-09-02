@@ -1,0 +1,18 @@
+{
+  "collection_time": "20250902_161421",
+  "data_sources": [
+    "covid_data",
+    "weather_data",
+    "health_news",
+    "hospital_status",
+    "emergency_alerts"
+  ],
+  "records_count": {
+    "covid_data": 56,
+    "weather_data": 5,
+    "health_news": 5,
+    "hospital_status": 10,
+    "emergency_alerts": 5
+  },
+  "status": "success"
+}
