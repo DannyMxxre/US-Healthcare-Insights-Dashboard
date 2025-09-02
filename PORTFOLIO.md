@@ -217,6 +217,12 @@
 
 ---
 
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
 **🏥 US Healthcare Insights Dashboard** - A comprehensive demonstration of advanced data engineering, machine learning, and full-stack development skills in healthcare analytics.
 
 **Built with ❤️ for healthcare analytics and data-driven insights**

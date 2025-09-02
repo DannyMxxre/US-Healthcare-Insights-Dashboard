@@ -251,6 +251,20 @@ python3 test_project.py
 
 ---
 
+## 📄 **License**
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 **Contributing**
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📞 **Contact**
+
+For questions, feedback, or collaboration opportunities, please reach out through the project repository.
+
+---
+
 **🏥 US Healthcare Insights Dashboard** - Enterprise-Grade Healthcare Analytics Platform
 
 **Built with ❤️ for healthcare analytics and data-driven insights**

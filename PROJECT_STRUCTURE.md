@@ -49,6 +49,7 @@ US Healthcare Insights Dashboard/
 ├── 📋 FEATURES.md                  # Features & Capabilities
 ├── 📋 QUICK_START.md              # Setup Guide
 ├── 📋 PORTFOLIO.md                # Portfolio Presentation
+├── 📄 LICENSE                     # MIT License
 └── 🚫 .gitignore                   # Git Ignore Rules
 ```
 
