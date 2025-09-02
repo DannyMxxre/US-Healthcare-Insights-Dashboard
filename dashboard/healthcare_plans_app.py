@@ -258,7 +258,7 @@ class HealthcarePlansDashboard:
             height=400
         )
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         
         # Features
         st.markdown("### 🎯 Plan Features")
@@ -316,7 +316,7 @@ class HealthcarePlansDashboard:
         )
         
         fig.update_layout(height=500)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         
         # Top plans by score
         st.markdown("### 🏆 Top 10 Plans by Overall Score")
@@ -333,7 +333,7 @@ class HealthcarePlansDashboard:
         )
         
         fig.update_layout(height=500)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
         
         # Plan type distribution
         col1, col2 = st.columns(2)
@@ -345,7 +345,7 @@ class HealthcarePlansDashboard:
                 names=plan_type_counts.index,
                 title="Best Plans by Type"
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         
         with col2:
             company_counts = self.best_plans_df['insurance_company'].value_counts().head(8)
@@ -355,11 +355,25 @@ class HealthcarePlansDashboard:
                 orientation='h',
                 title="Top Insurance Companies"
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
     
     def render_state_comparison(self):
         """Render state comparison"""
         st.markdown("### 🗺️ State-by-State Comparison")
+        
+        # State name to abbreviation mapping
+        state_abbrev = {
+            'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA',
+            'Colorado': 'CO', 'Connecticut': 'CT', 'Delaware': 'DE', 'Florida': 'FL', 'Georgia': 'GA',
+            'Hawaii': 'HI', 'Idaho': 'ID', 'Illinois': 'IL', 'Indiana': 'IN', 'Iowa': 'IA',
+            'Kansas': 'KS', 'Kentucky': 'KY', 'Louisiana': 'LA', 'Maine': 'ME', 'Maryland': 'MD',
+            'Massachusetts': 'MA', 'Michigan': 'MI', 'Minnesota': 'MN', 'Mississippi': 'MS', 'Missouri': 'MO',
+            'Montana': 'MT', 'Nebraska': 'NE', 'Nevada': 'NV', 'New Hampshire': 'NH', 'New Jersey': 'NJ',
+            'New Mexico': 'NM', 'New York': 'NY', 'North Carolina': 'NC', 'North Dakota': 'ND', 'Ohio': 'OH',
+            'Oklahoma': 'OK', 'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC',
+            'South Dakota': 'SD', 'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Vermont': 'VT',
+            'Virginia': 'VA', 'Washington': 'WA', 'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY'
+        }
         
         # Average metrics by state
         state_metrics = self.plans_df.groupby('state').agg({
@@ -369,29 +383,35 @@ class HealthcarePlansDashboard:
             'overall_score': 'mean'
         }).round(2)
         
+        # Convert state names to abbreviations
+        state_metrics = state_metrics.reset_index()
+        state_metrics['state_abbrev'] = state_metrics['state'].map(state_abbrev)
+        
         col1, col2 = st.columns(2)
         
         with col1:
             fig = px.choropleth(
-                state_metrics.reset_index(),
-                locations='state',
-                locationmode='country names',
+                state_metrics,
+                locations='state_abbrev',
+                locationmode='USA-states',
                 color='monthly_premium',
                 title="Average Monthly Premium by State",
-                color_continuous_scale='Reds'
+                color_continuous_scale='Reds',
+                scope='usa'
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         
         with col2:
             fig = px.choropleth(
-                state_metrics.reset_index(),
-                locations='state',
-                locationmode='country names',
+                state_metrics,
+                locations='state_abbrev',
+                locationmode='USA-states',
                 color='overall_rating',
                 title="Average Rating by State",
-                color_continuous_scale='Greens'
+                color_continuous_scale='Greens',
+                scope='usa'
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
     
     def run(self):
         """Run the dashboard"""
