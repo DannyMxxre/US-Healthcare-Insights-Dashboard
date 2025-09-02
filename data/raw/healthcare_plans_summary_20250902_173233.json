@@ -1,0 +1,26 @@
+{
+  "total_plans": 588,
+  "states_covered": 49,
+  "plan_types": {
+    "EPO": 88,
+    "Employer Group": 69,
+    "PPO": 67,
+    "POS": 65,
+    "ACA Marketplace": 65,
+    "Medicaid Managed Care": 64,
+    "HMO": 58,
+    "HDHP": 57,
+    "Medicare Advantage": 55
+  },
+  "avg_premium": 375.51615646258506,
+  "avg_deductible": 2027.7210884353742,
+  "avg_rating": 3.7421768707482994,
+  "top_companies": {
+    "Molina Healthcare": 77,
+    "Aetna": 52,
+    "UnitedHealth Group": 51,
+    "Health Net": 48,
+    "Centene Corporation": 47
+  },
+  "generated_at": "2025-09-02T17:32:33.646928"
+}
