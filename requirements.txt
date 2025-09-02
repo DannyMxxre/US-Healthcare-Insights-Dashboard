@@ -1,0 +1,43 @@
+# Core data processing
+pandas==2.1.4
+numpy==1.24.3
+requests==2.31.0
+tqdm==4.66.1
+
+# Database
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.23
+
+# ETL and workflow
+apache-airflow==2.7.3
+python-dotenv==1.0.0
+
+# Visualization
+streamlit==1.28.2
+plotly==5.17.0
+matplotlib==3.8.2
+seaborn==0.13.0
+
+# Data validation
+great-expectations==0.18.11
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+
+# Development
+jupyter==1.0.0
+ipython==8.17.2
+black==23.11.0
+flake8==6.1.0
+
+# API and web scraping
+beautifulsoup4==4.12.2
+selenium==4.15.2
+
+# Geospatial
+geopandas==0.14.1
+folium==0.15.0
+
+# Configuration
+pyyaml==6.0.1
