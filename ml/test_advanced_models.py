@@ -59,8 +59,9 @@ class SimpleAdvancedML:
         df['staff_efficiency'] = 1 - df['staff_shortage']
         df['emergency_load'] = df['emergency_wait_time'] * df['icu_occupancy']
         
-        # Handle missing values
-        df = df.fillna(df.mean())
+        # Handle missing values - only numeric columns
+        numeric_columns = df.select_dtypes(include=[np.number]).columns
+        df[numeric_columns] = df[numeric_columns].fillna(df[numeric_columns].mean())
         
         logger.info(f"✅ Prepared dataset: {df.shape}")
         return df
