@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgis/postgis:13-3.1
+    container_name: healthcare-postgres-test
+    environment:
+      POSTGRES_DB: healthcare_insights
+      POSTGRES_USER: healthcare_user
+      POSTGRES_PASSWORD: healthcare_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - healthcare-test-network
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    container_name: healthcare-redis-test
+    ports:
+      - "6379:6379"
+    networks:
+      - healthcare-test-network
+
+  # Streamlit Dashboard
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: healthcare-dashboard-test
+    ports:
+      - "8501:8501"
+    environment:
+      - DATABASE_URL=postgresql://healthcare_user:healthcare_password@postgres:5432/healthcare_insights
+    volumes:
+      - ./data:/app/data
+      - ./ml/saved_models:/app/ml/saved_models
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - healthcare-test-network
+
+  # FastAPI
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: healthcare-api-test
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://healthcare_user:healthcare_password@postgres:5432/healthcare_insights
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - healthcare-test-network
+
+volumes:
+  postgres_test_data:
+
+networks:
+  healthcare-test-network:
+    driver: bridge
